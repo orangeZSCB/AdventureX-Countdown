@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdventureX Commit Countdown</title>
+<style>
+  @font-face {
+    font-family: 'Orbixbeta';
+    src: url('https://s3.adventure-x.org/Fonts/Orbixbeta-Regular.otf') format('opentype');
+  }
+
+  body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Orbixbeta', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* 粒子背景 */
+  #particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .countdown-container {
+    text-align: center;
+    z-index: 1;
+    position: relative;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 90%;
+  }
+
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #ff3366;
+    text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .countdown {
+    color: #ff3366;
+    font-size: 6vw;
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .subtext {
+    margin-top: 2rem;
+    font-size: 1.2rem;
+    color: #aaa;
+    letter-spacing: 0.1em;
+  }
+
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+    .countdown {
+      font-size: 10vw;
+      letter-spacing: 0.1em;
+    }
+    .title {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+<!-- 粒子背景容器 -->
+<div id="particles-js"></div>
+
+<div class="countdown-container">
+  <div class="title">AdventureX Commit Countdown</div>
+  <div class="countdown" id="countdown"></div>
+  <div class="subtext">Time passing...</div>
+</div>
+
+<!-- 粒子效果库 -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+  // 初始化粒子背景
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 80,
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ff3366"
+      },
+      "shape": {
+        "type": "circle"
+      },
+      "opacity": {
+        "value": 0.5,
+        "random": true
+      },
+      "size": {
+        "value": 3,
+        "random": true
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ff3366",
+        "opacity": 0.3,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 2,
+        "direction": "none",
+        "random": true,
+        "straight": false,
+        "out_mode": "out"
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        }
+      }
+    }
+  });
+
+  // 倒计时功能
+  function updateCountdown() {
+    var targetDate = new Date("Jul 27, 2025 07:00:00").getTime();
+    var now = new Date().getTime();
+    var timeLeft = targetDate - now;
+
+    if (timeLeft < 0) {
+      clearInterval(interval);
+      document.getElementById("countdown").innerHTML = "00:00:00";
+      document.querySelector(".title").textContent = "Time's Up!";
+      document.querySelector(".subtext").textContent = "Next event: Project Expo! at Exchange Center.";
+      return;
+    }
+
+    var totalHours = Math.floor(timeLeft / (1000 * 60 * 60));
+    var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML = 
+      totalHours.toString().padStart(2, '0') + ":" + 
+      minutes.toString().padStart(2, '0') + ":" + 
+      seconds.toString().padStart(2, '0');
+  }
+
+  updateCountdown();
+  var interval = setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
