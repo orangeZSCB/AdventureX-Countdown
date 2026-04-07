@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AdventureX Commit Countdown</title>
+<title>AdventureX Countdown</title>
 <style>
   @font-face {
     font-family: 'Orbixbeta';
@@ -82,9 +82,9 @@
 <div id="particles-js"></div>
 
 <div class="countdown-container">
-  <div class="title">AdventureX Commit Countdown</div>
+  <div class="title">AdventureX Applications Countdown</div>
   <div class="countdown" id="countdown"></div>
-  <div class="subtext">Time passing...</div>
+  <div class="subtext">We're all waiting for it...</div>
 </div>
 
 <!-- 粒子效果库 -->
@@ -143,7 +143,7 @@
 
   // 倒计时功能
   function updateCountdown() {
-    var targetDate = new Date("Jul 27, 2025 07:00:00").getTime();
+    var targetDate = new Date("Apr 17, 2025 08:00:00").getTime();
     var now = new Date().getTime();
     var timeLeft = targetDate - now;
 
@@ -151,7 +151,7 @@
       clearInterval(interval);
       document.getElementById("countdown").innerHTML = "00:00:00";
       document.querySelector(".title").textContent = "Time's Up!";
-      document.querySelector(".subtext").textContent = "Next event: Project Expo! at Exchange Center.";
+      document.querySelector(".subtext").textContent = "Next event: Applications - Sign it up for your journey!";
       return;
     }
 
