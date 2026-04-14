@@ -16,7 +16,7 @@
     box-sizing: border-box;
   }
 
-  /* 定义颜色变量方便统一维护 */
+  /* 现代浏览器使用 OKLCH 变量 */
   :root {
     --primary-color: oklch(0.7261 0.1663 54.4);
     --primary-glow: oklch(0.7261 0.1663 54.4 / 0.8);
@@ -69,12 +69,8 @@
   }
   
   @keyframes glow {
-    from {
-      text-shadow: 0 0 20px var(--primary-glow), 0 0 40px oklch(0.7261 0.1663 54.4 / 0.4);
-    }
-    to {
-      text-shadow: 0 0 30px var(--primary-color), 0 0 60px oklch(0.7261 0.1663 54.4 / 0.6);
-    }
+    from { text-shadow: 0 0 20px var(--primary-glow); }
+    to { text-shadow: 0 0 30px var(--primary-color), 0 0 50px var(--primary-glow); }
   }
   
   .event-selector {
@@ -86,7 +82,7 @@
   }
   
   .event-btn {
-    background: oklch(0.7261 0.1663 54.4 / 0.1);
+    background: var(--primary-dim);
     border: 2px solid oklch(0.7261 0.1663 54.4 / 0.3);
     color: var(--primary-color);
     padding: 0.8rem 1.5rem;
@@ -94,22 +90,13 @@
     cursor: pointer;
     font-family: 'Orbixbeta', monospace;
     font-size: 0.9rem;
-    letter-spacing: 0.1em;
     transition: all 0.3s ease;
-    text-transform: uppercase;
-  }
-  
-  .event-btn:hover {
-    background: oklch(0.7261 0.1663 54.4 / 0.2);
-    border-color: var(--primary-color);
-    box-shadow: 0 0 20px oklch(0.7261 0.1663 54.4 / 0.3);
-    transform: translateY(-2px);
   }
   
   .event-btn.active {
-    background: oklch(0.7261 0.1663 54.4 / 0.3);
+    background: oklch(0.7261 0.1663 54.4 / 0.4);
     border-color: var(--primary-color);
-    box-shadow: 0 0 25px oklch(0.7261 0.1663 54.4 / 0.5);
+    box-shadow: 0 0 20px var(--primary-glow);
   }
   
   .countdown-display {
@@ -135,61 +122,6 @@
     text-shadow: 0 0 15px var(--primary-glow);
     line-height: 1;
     margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
-  
-  .time-label {
-    color: #aaa;
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  
-  .event-info {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: oklch(0.7261 0.1663 54.4 / 0.05);
-    border-radius: 10px;
-    border: 1px solid var(--primary-dim);
-  }
-  
-  .event-date {
-    font-size: 1.1rem;
-    color: oklch(0.8 0.1 54.4);
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.1em;
-  }
-  
-  .event-description {
-    font-size: 1rem;
-    color: #ccc;
-    line-height: 1.6;
-  }
-  
-  .subtext {
-    margin-top: 2rem;
-    font-size: 1.1rem;
-    color: #aaa;
-    letter-spacing: 0.1em;
-    font-style: italic;
-  }
-  
-  .completed-message {
-    background: linear-gradient(135deg, oklch(0.7261 0.1663 54.4 / 0.2), oklch(0.8 0.1 54.4 / 0.2));
-    padding: 2rem;
-    border-radius: 15px;
-    border: 2px solid var(--primary-color);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-  }
-  
-  .progress-container {
-    margin-top: 2rem;
-    width: 100%;
   }
   
   .progress-bar {
@@ -197,29 +129,20 @@
     background: oklch(0.7261 0.1663 54.4 / 0.1);
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid oklch(0.7261 0.1663 54.4 / 0.3);
+    border: 1px solid oklch(0.7261 0.1663 54.4 / 0.2);
   }
   
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--primary-color), oklch(0.85 0.12 54.4));
-    border-radius: 10px;
+    background: linear-gradient(90deg, var(--primary-color), #fff);
     transition: width 1s ease;
     box-shadow: 0 0 10px var(--primary-glow);
   }
-  
-  .progress-text {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #aaa;
-    text-align: center;
-  }
 
-  @media (max-width: 768px) {
-    .countdown-container { padding: 2rem 1rem; }
-    .time-unit { min-width: 80px; padding: 1rem 0.5rem; }
-    .event-btn { padding: 0.6rem 1rem; font-size: 0.8rem; }
-  }
+  .event-date { color: oklch(0.8 0.1 54.4); margin-bottom: 0.5rem; }
+  .event-info { margin-top: 2rem; padding: 1.5rem; background: rgba(0,0,0,0.2); border-radius: 10px; }
+  .time-label { color: #aaa; font-size: 0.8rem; text-transform: uppercase; }
+  .progress-text { margin-top: 0.5rem; font-size: 0.9rem; color: #aaa; }
 </style>
 </head>
 <body>
@@ -227,163 +150,90 @@
 
 <div class="countdown-container">
   <div class="title">AdventureX Event Countdown</div>
-  <div class="event-selector" id="eventSelector"></div>
-  <div class="countdown-display" id="countdownDisplay"></div>
+  <div id="eventSelector" class="event-selector"></div>
+  <div id="countdownDisplay" class="countdown-display"></div>
   <div class="progress-container">
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    <div class="progress-text" id="progressText"></div>
+    <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+    <div id="progressText" class="progress-text"></div>
   </div>
   <div class="event-info">
-    <div class="event-date" id="eventDate"></div>
-    <div class="event-description" id="eventDescription"></div>
+    <div id="eventDate" class="event-date"></div>
+    <div id="eventDescription" class="event-description"></div>
   </div>
-  <div class="subtext" id="subtext">We're all waiting for it...</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="./static/particles.js/2.0.0/particles.min.js"></script>
 <script>
-  // 将新颜色应用到 JS 配置中
-  const themeColor = "oklch(0.7261 0.1663 54.4)";
+  // particles.js 不支持 oklch，必须使用 hex 颜色
+  const hexThemeColor = "#E58D2E"; 
 
   const events = [
-    {
-      id: 'wait-applications',
-      name: 'Waiting Applications',
-      date: new Date("Apr 17, 2026 08:00:00"),
-      description: 'We\'re all waiting for it...',
-      color: themeColor
-    },
-    {
-      id: 'applications',
-      name: 'Applications',
-      date: new Date("Jul 21, 2026 09:00:00"),
-      description: 'Sign it up for your journey!',
-      color: '#66ff99' // 保持其他事件颜色，或根据需要统一
-    },
-    {
-      id: 'started',
-      name: 'Commit Countdown...',
-      date: new Date("Jul 26, 2026 07:00:00"),
-      description: 'DO IT! DO IT! DO IT!',
-      color: '#ffaa33'
-    },
-    {
-      id: 'commited',
-      name: 'Expo!',
-      date: new Date("Jul 26, 2026 23:00:00"),
-      description: 'Expo time!',
-      color: '#3366ff'
-    }
+    { id: 'wait', name: 'Wait', date: new Date("Apr 17, 2026 08:00:00"), description: "Waiting...", color: hexThemeColor },
+    { id: 'apps', name: 'Apps', date: new Date("Jul 21, 2026 09:00:00"), description: "Sign up!", color: "#66ff99" },
+    { id: 'start', name: 'Start', date: new Date("Jul 26, 2026 07:00:00"), description: "Do it!", color: "#ffaa33" }
   ];
-  
-  let currentEventIndex = 0;
-  
+
+  let currentIndex = 0;
+
+  // 初始化粒子
   particlesJS("particles-js", {
     "particles": {
-      "number": { "value": 60, "density": { "enable": true, "value_area": 1000 } },
-      "color": { "value": themeColor },
-      "shape": { "type": "circle" },
-      "opacity": { "value": 0.4, "random": true },
-      "size": { "value": 3, "random": true },
-      "line_linked": {
-        "enable": true,
-        "distance": 150,
-        "color": themeColor,
-        "opacity": 0.25,
-        "width": 1
-      },
+      "number": { "value": 60 },
+      "color": { "value": hexThemeColor },
+      "line_linked": { "enable": true, "color": hexThemeColor, "opacity": 0.3 },
       "move": { "enable": true, "speed": 1.5 }
     },
-    "interactivity": {
-      "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } }
-    },
+    "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } },
     "retina_detect": true
   });
-  
-  function renderEventSelector() {
-    const selector = document.getElementById('eventSelector');
-    selector.innerHTML = events.map((event, index) => `
-      <button class="event-btn ${index === currentEventIndex ? 'active' : ''}" 
-              onclick="selectEvent(${index})">
-        ${event.name}
-      </button>
-    `).join('');
-  }
-  
+
   function selectEvent(index) {
-    currentEventIndex = index;
-    renderEventSelector();
-    updateCountdown();
-    updateParticleColor(events[index].color);
-  }
-  
-  function updateParticleColor(color) {
-    if (window.pJSDom && window.pJSDom[0]) {
-      window.pJSDom[0].pJS.particles.color.value = color;
-      window.pJSDom[0].pJS.particles.line_linked.color = color;
+    currentIndex = index;
+    renderSelector();
+    update();
+    // 动态更新粒子颜色（也要用 hex）
+    if(window.pJSDom[0]) {
+      window.pJSDom[0].pJS.particles.color.value = events[index].color;
+      window.pJSDom[0].pJS.particles.line_linked.color = events[index].color;
       window.pJSDom[0].fn.particlesRefresh();
     }
   }
-  
-  function updateCountdown() {
-    const event = events[currentEventIndex];
+
+  function renderSelector() {
+    document.getElementById('eventSelector').innerHTML = events.map((e, i) => 
+      `<button class="event-btn ${i===currentIndex?'active':''}" onclick="selectEvent(${i})">${e.name}</button>`
+    ).join('');
+  }
+
+  function update() {
+    const e = events[currentIndex];
     const now = new Date().getTime();
-    const targetTime = event.date.getTime();
-    const timeLeft = targetTime - now;
+    const diff = e.date.getTime() - now;
     
-    const display = document.getElementById('countdownDisplay');
-    const dateEl = document.getElementById('eventDate');
-    const descEl = document.getElementById('eventDescription');
-    const subtext = document.getElementById('subtext');
-    const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
-    
-    dateEl.textContent = event.date.toLocaleString('zh-CN', {
-      year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
-    });
-    descEl.textContent = event.description;
-    
-    if (timeLeft < 0) {
-      display.innerHTML = `
-        <div class="completed-message">
-          <div style="font-size: 2rem; margin-bottom: 1rem;">✓</div>
-          <div style="font-size: 1.5rem; color: var(--primary-color);">Event Completed!</div>
-        </div>
-      `;
-      progressFill.style.width = '100%';
+    document.getElementById('eventDate').textContent = e.date.toLocaleString();
+    document.getElementById('eventDescription').textContent = e.description;
+
+    if (diff < 0) {
+      document.getElementById('countdownDisplay').innerHTML = "COMPLETED";
       return;
     }
-    
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-    
-    display.innerHTML = `
-      ${days > 0 ? `<div class="time-unit">
-        <div class="time-value">${days.toString().padStart(2, '0')}</div>
-        <div class="time-label">Days</div>
-      </div>` : ''}
-      <div class="time-unit"><div class="time-value">${hours.toString().padStart(2, '0')}</div><div class="time-label">Hours</div></div>
-      <div class="time-unit"><div class="time-value">${minutes.toString().padStart(2, '0')}</div><div class="time-label">Minutes</div></div>
-      <div class="time-unit"><div class="time-value">${seconds.toString().padStart(2, '0')}</div><div class="time-label">Seconds</div></div>
-    `;
-    
-    const firstEventTime = events[0].date.getTime();
-    const progress = Math.max(0, Math.min(100, ((now - firstEventTime) / (targetTime - firstEventTime)) * 100));
-    progressFill.style.width = progress + '%';
-    progressText.textContent = `${progress.toFixed(1)}% to ${event.name}`;
-  }
-  
-  renderEventSelector();
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
 
-  const nowTime = new Date().getTime();
-  const upcomingEventIndex = events.findIndex(e => e.date.getTime() > nowTime);
-  if (upcomingEventIndex !== -1) selectEvent(upcomingEventIndex);
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('countdownDisplay').innerHTML = `
+      <div class="time-unit"><div class="time-value">${d}</div><div class="time-label">Days</div></div>
+      <div class="time-unit"><div class="time-value">${h}</div><div class="time-label">Hours</div></div>
+      <div class="time-unit"><div class="time-value">${m}</div><div class="time-label">Mins</div></div>
+      <div class="time-unit"><div class="time-value">${s}</div><div class="time-label">Secs</div></div>
+    `;
+  }
+
+  renderSelector();
+  setInterval(update, 1000);
+  update();
 </script>
 </body>
 </html>
