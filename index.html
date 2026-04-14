@@ -5,512 +5,477 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AdventureX Countdown</title>
 <style>
-  @font-face {
-    font-family: 'Orbixbeta';
-    src: url('https://s3.adventure-x.org/Fonts/Orbixbeta-Regular.otf') format('opentype');
-  }
-  
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
-    color: #fff;
-    font-family: 'Orbixbeta', monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    overflow-x: hidden;
-    position: relative;
-  }
-  
-  /* 粒子背景 */
-  #particles-js {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    top: 0;
-    left: 0;
-  }
-  
-  .countdown-container {
-    text-align: center;
-    z-index: 1;
-    position: relative;
-    padding: 3rem 2rem;
-    border-radius: 20px;
-    max-width: 90%;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 51, 102, 0.2);
-    box-shadow: 0 8px 32px rgba(255, 51, 102, 0.1);
-  }
-  
-  .title {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
-    margin-bottom: 2rem;
-    color: #ff3366;
-    text-shadow: 0 0 20px rgba(255, 51, 102, 0.8), 
-                 0 0 40px rgba(255, 51, 102, 0.4);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-  
-  @keyframes glow {
-    from {
-      text-shadow: 0 0 20px rgba(255, 51, 102, 0.8), 
-                   0 0 40px rgba(255, 51, 102, 0.4);
-    }
-    to {
-      text-shadow: 0 0 30px rgba(255, 51, 102, 1), 
-                   0 0 60px rgba(255, 51, 102, 0.6);
-    }
-  }
-  
-  .event-selector {
-    margin-bottom: 2rem;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .event-btn {
-    background: rgba(255, 51, 102, 0.1);
-    border: 2px solid rgba(255, 51, 102, 0.3);
-    color: #ff3366;
-    padding: 0.8rem 1.5rem;
-    border-radius: 10px;
-    cursor: pointer;
-    font-family: 'Orbixbeta', monospace;
-    font-size: 0.9rem;
-    letter-spacing: 0.1em;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-  }
-  
-  .event-btn:hover {
-    background: rgba(255, 51, 102, 0.2);
-    border-color: #ff3366;
-    box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
-    transform: translateY(-2px);
-  }
-  
-  .event-btn.active {
-    background: rgba(255, 51, 102, 0.3);
-    border-color: #ff3366;
-    box-shadow: 0 0 25px rgba(255, 51, 102, 0.5);
-  }
-  
-  .countdown-display {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin: 2rem 0;
-    flex-wrap: wrap;
-  }
-  
-  .time-unit {
-    background: rgba(255, 51, 102, 0.05);
-    border: 2px solid rgba(255, 51, 102, 0.3);
-    border-radius: 15px;
-    padding: 1.5rem 1rem;
-    min-width: 100px;
-    backdrop-filter: blur(5px);
-  }
-  
-  .time-value {
-    color: #ff3366;
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    text-shadow: 0 0 15px rgba(255, 51, 102, 0.8),
-                 0 0 30px rgba(255, 51, 102, 0.4);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
-  
-  .time-label {
-    color: #aaa;
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  
-  .event-info {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: rgba(255, 51, 102, 0.05);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 51, 102, 0.2);
-  }
-  
-  .event-date {
-    font-size: 1.1rem;
-    color: #ff88aa;
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.1em;
-  }
-  
-  .event-description {
-    font-size: 1rem;
-    color: #ccc;
-    line-height: 1.6;
-  }
-  
-  .subtext {
-    margin-top: 2rem;
-    font-size: 1.1rem;
-    color: #aaa;
-    letter-spacing: 0.1em;
-    font-style: italic;
-  }
-  
-  .completed-message {
-    background: linear-gradient(135deg, rgba(255, 51, 102, 0.2), rgba(255, 136, 170, 0.2));
-    padding: 2rem;
-    border-radius: 15px;
-    border: 2px solid #ff3366;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-  }
-  
-  /* 进度条 */
-  .progress-container {
-    margin-top: 2rem;
-    width: 100%;
-  }
-  
-  .progress-bar {
-    height: 8px;
-    background: rgba(255, 51, 102, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 51, 102, 0.3);
-  }
-  
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #ff3366, #ff88aa);
-    border-radius: 10px;
-    transition: width 1s ease;
-    box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
-  }
-  
-  .progress-text {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #aaa;
-    text-align: center;
-  }
-  
-  /* 响应式调整 */
-  @media (max-width: 768px) {
-    .countdown-container {
-      padding: 2rem 1rem;
-    }
-    
-    .time-unit {
-      min-width: 80px;
-      padding: 1rem 0.5rem;
-    }
-    
-    .event-btn {
-      padding: 0.6rem 1rem;
-      font-size: 0.8rem;
-    }
-  }
+  @font-face {
+    font-family: 'Orbix';
+    src: url('./static/Orbix-Regular.ttf') format('truetype');
+    font-display: swap;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
+    color: #fff;
+    font-family: 'Orbix', 'Courier New', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  #particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    top: 0;
+    left: 0;
+  }
+
+  .countdown-container {
+    text-align: center;
+    z-index: 1;
+    position: relative;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    max-width: 90%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(244, 133, 41, 0.2);
+    box-shadow: 0 8px 32px rgba(244, 133, 41, 0.1);
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    margin-bottom: 2rem;
+    color: #f48529;
+    text-shadow: 0 0 20px rgba(244, 133, 41, 0.8),
+                 0 0 40px rgba(244, 133, 41, 0.4);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 20px rgba(244, 133, 41, 0.8),
+                   0 0 40px rgba(244, 133, 41, 0.4);
+    }
+    to {
+      text-shadow: 0 0 30px rgba(244, 133, 41, 1),
+                   0 0 60px rgba(244, 133, 41, 0.6);
+    }
+  }
+
+  .event-selector {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .event-btn {
+    background: rgba(244, 133, 41, 0.1);
+    border: 2px solid rgba(244, 133, 41, 0.3);
+    color: #f48529;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+  }
+
+  .event-btn:hover {
+    background: rgba(244, 133, 41, 0.2);
+    border-color: #f48529;
+    box-shadow: 0 0 20px rgba(244, 133, 41, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .event-btn.active {
+    background: rgba(244, 133, 41, 0.3);
+    border-color: #f48529;
+    box-shadow: 0 0 25px rgba(244, 133, 41, 0.5);
+  }
+
+  .countdown-display {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+
+  .time-unit {
+    background: rgba(244, 133, 41, 0.05);
+    border: 2px solid rgba(244, 133, 41, 0.3);
+    border-radius: 15px;
+    padding: 1.5rem 1rem;
+    min-width: 100px;
+    backdrop-filter: blur(5px);
+  }
+
+  .time-value {
+    color: #f48529;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    text-shadow: 0 0 15px rgba(244, 133, 41, 0.8),
+                 0 0 30px rgba(244, 133, 41, 0.4);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  .time-label {
+    color: #aaa;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .event-info {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(244, 133, 41, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(244, 133, 41, 0.2);
+  }
+
+  .event-date {
+    font-size: 1.1rem;
+    color: #f4a55d;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .event-description {
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.6;
+  }
+
+  .subtext {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    color: #aaa;
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+
+  .completed-message {
+    background: linear-gradient(135deg, rgba(244, 133, 41, 0.2), rgba(244, 165, 93, 0.2));
+    padding: 2rem;
+    border-radius: 15px;
+    border: 2px solid #f48529;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  .progress-container {
+    margin-top: 2rem;
+    width: 100%;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: rgba(244, 133, 41, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(244, 133, 41, 0.3);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f48529, #f4a55d);
+    border-radius: 10px;
+    transition: width 1s ease;
+    box-shadow: 0 0 10px rgba(244, 133, 41, 0.5);
+  }
+
+  .progress-text {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #aaa;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .countdown-container {
+      padding: 2rem 1rem;
+    }
+
+    .time-unit {
+      min-width: 80px;
+      padding: 1rem 0.5rem;
+    }
+
+    .event-btn {
+      padding: 0.6rem 1rem;
+      font-size: 0.8rem;
+    }
+  }
 </style>
 </head>
 <body>
-<!-- 粒子背景容器 -->
 <div id="particles-js"></div>
 
 <div class="countdown-container">
-  <div class="title">AdventureX Event Countdown</div>
-  
-  <!-- 事件选择器 -->
-  <div class="event-selector" id="eventSelector"></div>
-  
-  <!-- 倒计时显示 -->
-  <div class="countdown-display" id="countdownDisplay"></div>
-  
-  <!-- 进度条 -->
-  <div class="progress-container">
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    <div class="progress-text" id="progressText"></div>
-  </div>
-  
-  <!-- 事件信息 -->
-  <div class="event-info">
-    <div class="event-date" id="eventDate"></div>
-    <div class="event-description" id="eventDescription"></div>
-  </div>
-  
-  <div class="subtext" id="subtext">We're all waiting for it...</div>
+  <div class="title">AdventureX Event Countdown</div>
+
+  <div class="event-selector" id="eventSelector"></div>
+
+  <div class="countdown-display" id="countdownDisplay"></div>
+
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-text" id="progressText"></div>
+  </div>
+
+  <div class="event-info">
+    <div class="event-date" id="eventDate"></div>
+    <div class="event-description" id="eventDescription"></div>
+  </div>
+
+  <div class="subtext" id="subtext">We're all waiting for it...</div>
 </div>
 
-<!-- 粒子效果库 -->
 <script src="./static/particles.js/2.0.0/particles.min.js"></script>
 <script>
-  // 事件配置
-  const events = [
-    {
-      id: 'wait-applications',
-      name: 'Waiting Applications',
-      date: new Date("Apr 17, 2026 08:00:00"),
-      description: 'We\'re all waiting for it...',
-      color: '#ff3366'
-    },
-    {
-      id: 'applications',
-      name: 'Applications',
-      date: new Date("Jul 21, 2026 09:00:00"),
-      description: 'Sign it up for your journey!',
-      color: '#66ff99'
-    },
-    {
-      id: 'started',
-      name: 'Commit Countdown...',
-      date: new Date("Jul 26, 2026 07:00:00"),
-      description: 'DO IT! DO IT! DO IT!',
-      color: '#ffaa33'
-    },
-    {
-      id: 'commited',
-      name: 'Expo!',
-      date: new Date("Jul 26, 2026 23:00:00"),
-      description: 'Expo time!',
-      color: '#3366ff'
-    }
-  ];
-  
-  let currentEventIndex = 0;
-  let countdownInterval;
-  
-  // 初始化粒子背景 - 更合理的配置
-  particlesJS("particles-js", {
-    "particles": {
-      "number": {
-        "value": 60,
-        "density": {
-          "enable": true,
-          "value_area": 1000
-        }
-      },
-      "color": {
-        "value": "#ff3366"
-      },
-      "shape": {
-        "type": "circle"
-      },
-      "opacity": {
-        "value": 0.4,
-        "random": true,
-        "anim": {
-          "enable": true,
-          "speed": 1,
-          "opacity_min": 0.1,
-          "sync": false
-        }
-      },
-      "size": {
-        "value": 3,
-        "random": true,
-        "anim": {
-          "enable": true,
-          "speed": 2,
-          "size_min": 0.5,
-          "sync": false
-        }
-      },
-      "line_linked": {
-        "enable": true,
-        "distance": 150,
-        "color": "#ff3366",
-        "opacity": 0.25,
-        "width": 1
-      },
-      "move": {
-        "enable": true,
-        "speed": 1.5,
-        "direction": "none",
-        "random": true,
-        "straight": false,
-        "out_mode": "out",
-        "bounce": false
-      }
-    },
-    "interactivity": {
-      "detect_on": "canvas",
-      "events": {
-        "onhover": {
-          "enable": true,
-          "mode": "grab"
-        },
-        "onclick": {
-          "enable": true,
-          "mode": "push"
-        },
-        "resize": true
-      },
-      "modes": {
-        "grab": {
-          "distance": 140,
-          "line_linked": {
-            "opacity": 0.5
-          }
-        },
-        "push": {
-          "particles_nb": 4
-        }
-      }
-    },
-    "retina_detect": true
-  });
-  
-  // 渲染事件选择器
-  function renderEventSelector() {
-    const selector = document.getElementById('eventSelector');
-    selector.innerHTML = events.map((event, index) => `
-      <button class="event-btn ${index === currentEventIndex ? 'active' : ''}" 
-              onclick="selectEvent(${index})">
-        ${event.name}
-      </button>
-    `).join('');
-  }
-  
-  // 选择事件
-  function selectEvent(index) {
-    currentEventIndex = index;
-    renderEventSelector();
-    updateCountdown();
-    updateParticleColor(events[index].color);
-  }
-  
-  // 更新粒子颜色
-  function updateParticleColor(color) {
-    if (window.pJSDom && window.pJSDom[0]) {
-      window.pJSDom[0].pJS.particles.color.value = color;
-      window.pJSDom[0].pJS.particles.line_linked.color = color;
-      window.pJSDom[0].fn.particlesRefresh();
-    }
-  }
-  
-  // 更新倒计时
-  function updateCountdown() {
-    const event = events[currentEventIndex];
-    const now = new Date().getTime();
-    const targetTime = event.date.getTime();
-    const timeLeft = targetTime - now;
-    
-    const display = document.getElementById('countdownDisplay');
-    const dateEl = document.getElementById('eventDate');
-    const descEl = document.getElementById('eventDescription');
-    const subtext = document.getElementById('subtext');
-    const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
-    
-    // 更新事件信息
-    dateEl.textContent = event.date.toLocaleString('zh-CN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-    descEl.textContent = event.description;
-    
-    if (timeLeft < 0) {
-      // 事件已结束
-      display.innerHTML = `
-        <div class="completed-message">
-          <div style="font-size: 2rem; margin-bottom: 1rem;">✓</div>
-          <div style="font-size: 1.5rem; color: #ff3366;">Event Completed!</div>
-        </div>
-      `;
-      subtext.textContent = "Moving on to the next milestone...";
-      progressFill.style.width = '100%';
-      progressText.textContent = 'Completed';
-      
-      // 自动切换到下一个未完成的事件
-      const nextEventIndex = events.findIndex((e, i) => i > currentEventIndex && e.date.getTime() > now);
-      if (nextEventIndex !== -1 && currentEventIndex !== nextEventIndex) {
-        setTimeout(() => selectEvent(nextEventIndex), 3000);
-      }
-      return;
-    }
-    
-    // 计算时间单位
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-    
-    // 渲染倒计时
-    display.innerHTML = `
-      ${days > 0 ? `<div class="time-unit">
-        <div class="time-value">${days.toString().padStart(2, '0')}</div>
-        <div class="time-label">Days</div>
-      </div>` : ''}
-      <div class="time-unit">
-        <div class="time-value">${hours.toString().padStart(2, '0')}</div>
-        <div class="time-label">Hours</div>
-      </div>
-      <div class="time-unit">
-        <div class="time-value">${minutes.toString().padStart(2, '0')}</div>
-        <div class="time-label">Minutes</div>
-      </div>
-      <div class="time-unit">
-        <div class="time-value">${seconds.toString().padStart(2, '0')}</div>
-        <div class="time-label">Seconds</div>
-      </div>
-    `;
-    
-    // 计算进度
-    const firstEventTime = events[0].date.getTime();
-    const totalDuration = targetTime - firstEventTime;
-    const elapsed = now - firstEventTime;
-    const progress = Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
-    
-    progressFill.style.width = progress + '%';
-    progressText.textContent = `${progress.toFixed(1)}% to ${event.name}`;
-    
-    // 更新提示文本
-    if (days > 7) {
-      subtext.textContent = "Mark your calendar!";
-    } else if (days > 0) {
-      subtext.textContent = "Getting close...";
-    } else if (hours > 1) {
-      subtext.textContent = "Almost there!";
-    } else {
-      subtext.textContent = "Any moment now...";
-    }
-  }
-  
-  // 初始化
-  renderEventSelector();
-  updateCountdown();
-  countdownInterval = setInterval(updateCountdown, 1000);
-  
-  // 自动选择最近的未来事件
-  const now = new Date().getTime();
-  const upcomingEventIndex = events.findIndex(e => e.date.getTime() > now);
-  if (upcomingEventIndex !== -1) {
-    selectEvent(upcomingEventIndex);
-  }
+  const events = [
+    {
+      id: 'wait-applications',
+      name: 'Waiting Applications',
+      date: new Date("Apr 17, 2026 08:00:00"),
+      description: 'We\'re all waiting for it...',
+      color: '#f48529'
+    },
+    {
+      id: 'applications',
+      name: 'Applications',
+      date: new Date("Jul 21, 2026 09:00:00"),
+      description: 'Sign it up for your journey!',
+      color: '#66ff99'
+    },
+    {
+      id: 'started',
+      name: 'Commit Countdown...',
+      date: new Date("Jul 26, 2026 07:00:00"),
+      description: 'DO IT! DO IT! DO IT!',
+      color: '#ffaa33'
+    },
+    {
+      id: 'commited',
+      name: 'Expo!',
+      date: new Date("Jul 26, 2026 23:00:00"),
+      description: 'Expo time!',
+      color: '#3366ff'
+    }
+  ];
+
+  let currentEventIndex = 0;
+  let countdownInterval;
+
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 60,
+        "density": {
+          "enable": true,
+          "value_area": 1000
+        }
+      },
+      "color": {
+        "value": "#f48529"
+      },
+      "shape": {
+        "type": "circle"
+      },
+      "opacity": {
+        "value": 0.4,
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 1,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 2,
+          "size_min": 0.5,
+          "sync": false
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#f48529",
+        "opacity": 0.25,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 1.5,
+        "direction": "none",
+        "random": true,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "grab"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        },
+        "resize": true
+      },
+      "modes": {
+        "grab": {
+          "distance": 140,
+          "line_linked": {
+            "opacity": 0.5
+          }
+        },
+        "push": {
+          "particles_nb": 4
+        }
+      }
+    },
+    "retina_detect": true
+  });
+
+  function renderEventSelector() {
+    const selector = document.getElementById('eventSelector');
+    selector.innerHTML = events.map((event, index) => 
+      '<button class="event-btn ' + (index === currentEventIndex ? 'active' : '') + '" onclick="selectEvent(' + index + ')">' + event.name + '</button>'
+    ).join('');
+  }
+
+  function selectEvent(index) {
+    currentEventIndex = index;
+    renderEventSelector();
+    updateCountdown();
+    updateParticleColor(events[index].color);
+  }
+
+  function updateParticleColor(color) {
+    try {
+      if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
+        window.pJSDom[0].pJS.particles.color.value = color;
+        window.pJSDom[0].pJS.particles.line_linked.color = color;
+        if (window.pJSDom[0].pJS.fn && window.pJSDom[0].pJS.fn.particlesRefresh) {
+          window.pJSDom[0].pJS.fn.particlesRefresh();
+        }
+      }
+    } catch (e) {
+      console.log('Particle color update skipped');
+    }
+  }
+
+  function updateCountdown() {
+    const event = events[currentEventIndex];
+    const now = new Date().getTime();
+    const targetTime = event.date.getTime();
+    const timeLeft = targetTime - now;
+
+    const display = document.getElementById('countdownDisplay');
+    const dateEl = document.getElementById('eventDate');
+    const descEl = document.getElementById('eventDescription');
+    const subtext = document.getElementById('subtext');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+
+    dateEl.textContent = event.date.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    descEl.textContent = event.description;
+
+    if (timeLeft < 0) {
+      display.innerHTML = '<div class="completed-message"><div style="font-size: 2rem; margin-bottom: 1rem;">✓</div><div style="font-size: 1.5rem; color: #f48529;">Event Completed!</div></div>';
+      subtext.textContent = "Moving on to the next milestone...";
+      progressFill.style.width = '100%';
+      progressText.textContent = 'Completed';
+
+      const nextEventIndex = events.findIndex((e, i) => i > currentEventIndex && e.date.getTime() > now);
+      if (nextEventIndex !== -1 && currentEventIndex !== nextEventIndex) {
+        setTimeout(function() { selectEvent(nextEventIndex); }, 3000);
+      }
+      return;
+    }
+
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    var html = '';
+    if (days > 0) {
+      html += '<div class="time-unit"><div class="time-value">' + days.toString().padStart(2, '0') + '</div><div class="time-label">Days</div></div>';
+    }
+    html += '<div class="time-unit"><div class="time-value">' + hours.toString().padStart(2, '0') + '</div><div class="time-label">Hours</div></div>';
+    html += '<div class="time-unit"><div class="time-value">' + minutes.toString().padStart(2, '0') + '</div><div class="time-label">Minutes</div></div>';
+    html += '<div class="time-unit"><div class="time-value">' + seconds.toString().padStart(2, '0') + '</div><div class="time-label">Seconds</div></div>';
+    display.innerHTML = html;
+
+    const firstEventTime = events[0].date.getTime();
+    const totalDuration = targetTime - firstEventTime;
+    const elapsed = now - firstEventTime;
+    const progress = Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
+
+    progressFill.style.width = progress + '%';
+    progressText.textContent = progress.toFixed(1) + '% to ' + event.name;
+
+    if (days > 7) {
+      subtext.textContent = "Mark your calendar!";
+    } else if (days > 0) {
+      subtext.textContent = "Getting close...";
+    } else if (hours > 1) {
+      subtext.textContent = "Almost there!";
+    } else {
+      subtext.textContent = "Any moment now...";
+    }
+  }
+
+  renderEventSelector();
+  updateCountdown();
+  countdownInterval = setInterval(updateCountdown, 1000);
+
+  const now = new Date().getTime();
+  const upcomingEventIndex = events.findIndex(function(e) { return e.date.getTime() > now; });
+  if (upcomingEventIndex !== -1) {
+    selectEvent(upcomingEventIndex);
+  }
 </script>
 </body>
 </html>
