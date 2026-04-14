@@ -10,10 +10,6 @@
     src: url('https://s3.adventure-x.org/Fonts/Orbixbeta-Regular.otf') format('opentype');
   }
 
-  :root {
-    --main-color: oklch(0.7261 0.1663 54.4);
-  }
-
   * {
     margin: 0;
     padding: 0;
@@ -22,7 +18,7 @@
 
   body {
     background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
-    color: #fff;
+    color: #DFCEAC;
     font-family: 'Orbixbeta', monospace;
     display: flex;
     justify-content: center;
@@ -52,15 +48,16 @@
     max-width: 90%;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(0 0 0 / 0.2);
-    box-shadow: 0 8px 32px rgba(0 0 0 / 0.1);
+    border: 1px solid rgba(223, 206, 172, 0.2);
+    box-shadow: 0 8px 32px rgba(223, 206, 172, 0.1);
   }
 
   .title {
     font-size: clamp(1.5rem, 5vw, 2.5rem);
     margin-bottom: 2rem;
-    color: var(--main-color);
-    text-shadow: 0 0 20px var(--main-color), 0 0 40px var(--main-color);
+    color: #DFCEAC;
+    text-shadow: 0 0 20px rgba(223, 206, 172, 0.8),
+                 0 0 40px rgba(223, 206, 172, 0.4);
     letter-spacing: 0.15em;
     text-transform: uppercase;
     animation: glow 2s ease-in-out infinite alternate;
@@ -68,10 +65,12 @@
 
   @keyframes glow {
     from {
-      text-shadow: 0 0 20px var(--main-color), 0 0 40px var(--main-color);
+      text-shadow: 0 0 20px rgba(223, 206, 172, 0.8),
+                   0 0 40px rgba(223, 206, 172, 0.4);
     }
     to {
-      text-shadow: 0 0 30px var(--main-color), 0 0 60px var(--main-color);
+      text-shadow: 0 0 30px rgba(223, 206, 172, 1),
+                   0 0 60px rgba(223, 206, 172, 0.6);
     }
   }
 
@@ -84,9 +83,9 @@
   }
 
   .event-btn {
-    background: rgba(255 255 255 / 0.1);
-    border: 2px solid rgba(var(--main-color-rgb), 0.3);
-    color: var(--main-color);
+    background: rgba(223, 206, 172, 0.1);
+    border: 2px solid rgba(223, 206, 172, 0.3);
+    color: #DFCEAC;
     padding: 0.8rem 1.5rem;
     border-radius: 10px;
     cursor: pointer;
@@ -98,16 +97,16 @@
   }
 
   .event-btn:hover {
-    background: rgba(var(--main-color-rgb), 0.2);
-    border-color: var(--main-color);
-    box-shadow: 0 0 20px var(--main-color);
+    background: rgba(223, 206, 172, 0.2);
+    border-color: #DFCEAC;
+    box-shadow: 0 0 20px rgba(223, 206, 172, 0.3);
     transform: translateY(-2px);
   }
 
   .event-btn.active {
-    background: rgba(var(--main-color-rgb), 0.3);
-    border-color: var(--main-color);
-    box-shadow: 0 0 25px var(--main-color);
+    background: rgba(223, 206, 172, 0.3);
+    border-color: #DFCEAC;
+    box-shadow: 0 0 25px rgba(223, 206, 172, 0.5);
   }
 
   .countdown-display {
@@ -119,8 +118,8 @@
   }
 
   .time-unit {
-    background: rgba(var(--main-color-rgb), 0.05);
-    border: 2px solid rgba(var(--main-color-rgb), 0.3);
+    background: rgba(223, 206, 172, 0.05);
+    border: 2px solid rgba(223, 206, 172, 0.3);
     border-radius: 15px;
     padding: 1.5rem 1rem;
     min-width: 100px;
@@ -128,9 +127,10 @@
   }
 
   .time-value {
-    color: var(--main-color);
+    color: #DFCEAC;
     font-size: clamp(2.5rem, 8vw, 4rem);
-    text-shadow: 0 0 15px var(--main-color), 0 0 30px var(--main-color);
+    text-shadow: 0 0 15px rgba(223, 206, 172, 0.8),
+                 0 0 30px rgba(223, 206, 172, 0.4);
     line-height: 1;
     margin-bottom: 0.5rem;
     font-weight: bold;
@@ -146,37 +146,37 @@
   .event-info {
     margin-top: 2rem;
     padding: 1.5rem;
-    background: rgba(var(--main-color-rgb), 0.05);
+    background: rgba(223, 206, 172, 0.05);
     border-radius: 10px;
-    border: 1px solid rgba(var(--main-color-rgb), 0.2);
+    border: 1px solid rgba(223, 206, 172, 0.2);
   }
 
   .event-date {
     font-size: 1.1rem;
-    color: oklch(0.7261 0.1663 54.4 / 0.8);
+    color: #DFCEAC;
     margin-bottom: 0.5rem;
     letter-spacing: 0.1em;
   }
 
   .event-description {
     font-size: 1rem;
-    color: #ccc;
+    color: #eee;
     line-height: 1.6;
   }
 
   .subtext {
     margin-top: 2rem;
     font-size: 1.1rem;
-    color: #aaa;
+    color: #DFCEAC;
     letter-spacing: 0.1em;
     font-style: italic;
   }
 
   .completed-message {
-    background: linear-gradient(135deg, rgba(var(--main-color-rgb), 0.2), rgba(var(--main-color-rgb), 0.5));
+    background: linear-gradient(135deg, rgba(223, 206, 172, 0.2), rgba(223, 206, 172, 0.2));
     padding: 2rem;
     border-radius: 15px;
-    border: 2px solid var(--main-color);
+    border: 2px solid #DFCEAC;
     animation: pulse 2s ease-in-out infinite;
   }
 
@@ -192,24 +192,24 @@
 
   .progress-bar {
     height: 8px;
-    background: rgba(var(--main-color-rgb), 0.1);
+    background: rgba(223, 206, 172, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid rgba(var(--main-color-rgb), 0.3);
+    border: 1px solid rgba(223, 206, 172, 0.3);
   }
 
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--main-color), oklch(0.7261 0.1663 54.4 / 0.7));
+    background: linear-gradient(90deg, #DFCEAC, #E6D9B5);
     border-radius: 10px;
     transition: width 1s ease;
-    box-shadow: 0 0 10px var(--main-color);
+    box-shadow: 0 0 10px rgba(223, 206, 172, 0.5);
   }
 
   .progress-text {
     margin-top: 0.5rem;
     font-size: 0.9rem;
-    color: #aaa;
+    color: #DFCEAC;
     text-align: center;
   }
 
