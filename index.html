@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -149,7 +150,6 @@
 <body>
 <div id="particles-js"></div>
 <div class="countdown-container">
-
   <!-- ADVENTUREX brand logo rendered from Orbix glyph data (ADVENTUREX.liga + X.ss02) -->
   <div class="title-logo" style="margin-bottom:2rem;">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 100" width="100%" style="max-width:700px;display:block;margin:0 auto;filter:drop-shadow(0 0 20px rgba(244,133,41,0.8)) drop-shadow(0 0 40px rgba(244,133,41,0.4));">
@@ -176,7 +176,6 @@
 </svg>
 </div>
   <div class="subtitle">Event Countdown</div>
-
   <div class="event-selector" id="eventSelector"></div>
   <div class="countdown-display" id="countdownDisplay"></div>
   <div class="progress-container">
@@ -189,20 +188,17 @@
   </div>
   <div class="subtext" id="subtext">We're all waiting for it...</div>
 </div>
-
 <script src="./static/particles.js/2.0.0/particles.min.js"></script>
 <script>
   const events = [
     { id:'wait-applications', name:'Waiting Applications', date:new Date("Apr 17, 2026 19:50:00"), description:"We're all waiting for it...", color:'#f48529' },
-    { id:'applications', name:'Applications', date:new Date("Jul 2, 2026 07:00:00"), description:'Now go to sign up for it!', color:'#66ff99' },
-    { id:'stopped-app', name:'Starting', date:new Date("Jul 21, 2026 00:00:00"), description:'Ready to start...', color:'#66ff99' },
+    { id:'applications', name:'Applications', date:new Date("Jul 21, 2026 17:24:00"), description:'Now go to sign up for it!', color:'#66ff99' },
+    { id:'stopped-app', name:'Starting', date:new Date("Jul 22, 2026 09:00:00"), description:'Ready to start...', color:'#66ff99' },
     { id:'started', name:'Commit Countdown...', date:new Date("Jul 26, 2026 07:00:00"), description:'DO IT! DO IT! DO IT!', color:'#ffaa33' },
     { id:'commited', name:'Music Fes', date:new Date("Jul 26, 2026 18:00:00"), description:'Music festival!', color:'#3366ff' }
   ];
   let currentEventIndex = 0;
-
   particlesJS("particles-js",{"particles":{"number":{"value":60,"density":{"enable":true,"value_area":1000}},"color":{"value":"#f48529"},"shape":{"type":"circle"},"opacity":{"value":0.4,"random":true,"anim":{"enable":true,"speed":1,"opacity_min":0.1,"sync":false}},"size":{"value":3,"random":true,"anim":{"enable":true,"speed":2,"size_min":0.5,"sync":false}},"line_linked":{"enable":true,"distance":150,"color":"#f48529","opacity":0.25,"width":1},"move":{"enable":true,"speed":1.5,"direction":"none","random":true,"straight":false,"out_mode":"out","bounce":false}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"grab"},"onclick":{"enable":true,"mode":"push"},"resize":true},"modes":{"grab":{"distance":140,"line_linked":{"opacity":0.5}},"push":{"particles_nb":4}}},"retina_detect":true});
-
   function renderEventSelector() {
     document.getElementById('eventSelector').innerHTML = events.map((e,i) =>
       `<button class="event-btn ${i===currentEventIndex?'active':''}" onclick="selectEvent(${i})">${e.name}</button>`
